@@ -1,0 +1,13 @@
+model:
+  name: xgboost  # Specify the model (xgboost, neural_network, random_forest, etc.)
+  problem_type: regression  # Specify 'regression' or 'classification'
+  parameters:
+    - max_depth
+    - learning_rate
+    - n_estimators
+    # Add more parameters as needed according to the model used in model.name
+optimization:
+  method: optuna  # Specify 'optuna', 'grid_search', or 'bayesian'
+data:
+  train_path: data/train.csv
+  test_path: data/test.csv
