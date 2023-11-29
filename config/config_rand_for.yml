@@ -1,0 +1,36 @@
+model:
+  name: RandomForest
+  problem_type: classification  
+  parameters:
+    n_estimators:
+      suggest_type: suggest_int
+      min: 10
+      max: 3000
+    max_depth:
+      suggest_type: suggest_int
+      min: 1
+      max: 500
+    min_samples_split:
+      suggest_type: suggest_int
+      min: 2
+      max: 50
+    min_samples_leaf:
+      suggest_type: suggest_int
+      min: 1
+      max: 50
+    criterion:
+      suggest_type: suggest_categorical
+      choices:
+        - "gini"
+        - "entropy"
+    bootstrap:
+      suggest_type: suggest_categorical
+      choices:
+        - True
+        - False
+optimization:
+  method: bayesian_optim  
+  n_trials: 1000
+data:
+  train_path: data/train.csv
+  test_path: data/test.csv

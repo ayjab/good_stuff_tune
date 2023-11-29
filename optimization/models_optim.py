@@ -3,6 +3,8 @@ from sklearn.svm import SVC
 from sklearn.ensemble import RandomForestClassifier
 from skopt import BayesSearchCV
 import optuna
+import traceback
+import sys
 
 class OptunaTuner:
     @staticmethod
@@ -21,8 +23,16 @@ class GridSearchTuner:
 class BayesianTuner:
     @staticmethod
     def tune(model, param_space, X_train, y_train, X_valid, y_valid):
-        bayesian_search = BayesSearchCV(model, param_space, cv=5)
-        bayesian_search.fit(X_train, y_train)
+        print("Running Bayesian optimization...", flush=True)
+        try:
+            bayesian_search = BayesSearchCV(model, param_space, cv=5, verbose=1, n_iter=5, n_jobs=-1, random_state=42)
+            bayesian_search.fit(X_train, y_train)
+            print("Bayesian optimization done.")
+            return bayesian_search
+        except Exception as e:
+            print(f"Error during Bayesian optimization:")
+            traceback.print_exc()
+            return None
 
     @staticmethod
     def get_best_params(tuner):
@@ -35,5 +45,5 @@ class BayesianTuner:
         return best_model
 
     @staticmethod
-    def predict(model, X_valid):
+    def predict_result(model, X_valid):
         return model.predict(X_valid)

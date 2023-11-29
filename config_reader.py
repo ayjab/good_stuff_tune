@@ -31,14 +31,16 @@ class ConfigReader:
         }
         return data_paths
 
-    def get_parameter_ranges(self):
+    def get_parameter_ranges_bayes(self):
         parameter_ranges = {}
         for param, param_info in self.config['model']['parameters'].items():
             suggest_type = param_info['suggest_type']
-            if suggest_type in ["suggest_float", "suggest_int"]:
-                parameter_ranges[(param, suggest_type)] = [np.float(param_info['min']), np.float(param_info['max'])]
+            if suggest_type in ["suggest_float"]:
+                parameter_ranges[param] = (np.float(param_info['min']), np.float(param_info['max']))
+            elif suggest_type in ["suggest_int"]:
+                parameter_ranges[param] = (np.int(param_info['min']), np.int(param_info['max']))
             elif suggest_type == 'suggest_categorical':
-                parameter_ranges[(param, suggest_type)] = param_info['choices']
+                parameter_ranges[param] = param_info['choices']
             else:
                 raise ValueError(f"Unknown suggest_type: {suggest_type}")
 
