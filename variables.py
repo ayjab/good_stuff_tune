@@ -1,5 +1,6 @@
-from models.classification.models import * #, RandomForestClassifierWrapper, LogisticRegressionWrapper
-#from models.regression.models import SVMRegressor, RandomForestRegressorWrapper, LinearRegressionWrapper
+from models.classification.models import * 
+from optimization.models_optim import *
+from models.regression.models import *
 
 
 MODELS = {
@@ -13,6 +14,11 @@ MODELS = {
     #    'RandomForest': RandomForestRegressorWrapper,
     #    'LinearRegression': LinearRegressionWrapper,
     #},
+}
+
+OPTIM_MODELS = {"optuna": OptunaTuner,
+        "grid_search": GridSearchTuner,
+        "bayesian_optim": BayesianTuner
 }
 
 FILE_PATH = {

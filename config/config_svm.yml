@@ -1,5 +1,5 @@
 model:
-  name: RandomForest  
+  name: SVM  
   problem_type: classification  
   parameters:
     C:
@@ -18,7 +18,7 @@ model:
       min: 1e-5
       max: 10
 optimization:
-  method: optuna  
+  method: bayesian_optim  
   n_trials: 1000
 data:
   train_path: data/train.csv

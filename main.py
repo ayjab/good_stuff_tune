@@ -3,11 +3,11 @@ import yaml
 from config_reader import ConfigReader
 import models.classification.models as clas
 import models.regression as regr
-from variables import FILE_PATH
 from models import ModelFactory
 from sklearn.model_selection import train_test_split
 from sklearn import datasets
 from models import ModelFactory
+from optimization.init import TuneFactory
 
 config_name="config/config_svm.yml"
 
@@ -21,7 +21,9 @@ optim_method = optim_infos["method"]
 model_name = model_info["name"]
 prob_type = model_info["problem_type"]
 
-prob_model_file = FILE_PATH[prob_type]
+param_grid_svm = {
+    'C': [0.001, 0.01, 0.1, 1, 10, 100],
+    'kernel': ['linear', 'rbf', 'poly', 'sigmoid']}
 
 if __name__ == "__main__":
 
@@ -29,9 +31,14 @@ if __name__ == "__main__":
     iris = datasets.load_iris()
     X, y = iris.data[:, :2], iris.target
     X_train, X_valid, y_train, y_valid = train_test_split(X, y, test_size=0.3, random_state=42)
-    print("_____TRAINING______")
-    model.train(X_train, y_train)
-    print(model.predict(X_valid))
-    print(y_valid)
-    print("_____ACCURACY______")
-    print(model.accuracy(X_valid, y_valid))   
+    optim_model = TuneFactory.create_model(optim_method)
+    bayesian_optimization = optim_model.tune(model.model, param_grid_svm, X_train, y_train, X_valid, y_valid)
+
+    print(optim_model.get_best_params(bayesian_optimization))
+    print("DONE")
+"""    best_model = optim_model.fit_best_model(bayesian_optimization, X_train, y_train)
+    y_pred = BayesianTuner.predict(best_model, X_valid)
+
+    # Calculate accuracy
+    accuracy = accuracy_score(y_valid, y_pred)
+    print(f"Validation Accuracy with Best Parameters: {accuracy}")"""
