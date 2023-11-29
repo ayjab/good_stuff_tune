@@ -1,0 +1,25 @@
+model:
+  name: RandomForest  
+  problem_type: classification  
+  parameters:
+    C:
+      suggest_type: suggest_float
+      min: 1e-5
+      max: 10
+    kernel:
+      suggest_type: suggest_categorical
+      choices:
+        - "sigmoid"
+        - "linear"
+        - "poly"
+        - "rbf"
+    gamma:
+      suggest_type: suggest_float
+      min: 1e-5
+      max: 10
+optimization:
+  method: optuna  
+  n_trials: 1000
+data:
+  train_path: data/train.csv
+  test_path: data/test.csv
