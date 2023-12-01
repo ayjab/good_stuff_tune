@@ -33,14 +33,19 @@ X_train, X_valid, y_train, y_valid = train_test_split(X, y, test_size=0.3, rando
 
 if __name__ == "__main__":
 
+    print("Model: ", model_name)
+    print("Optimization method: ", optim_method)
+    print("Class: ", prob_type)
+    print("\n")   
+
     model = ModelFactory.create_model(prob_type, model_name)
     optim_model = TuneFactory.create_model(optim_method)
-    bayesian_search = optim_model.tune(model.model, parameters_infos, X_train, y_train, optim_params)
+    tuning = optim_model.tune(model=model.model, param_space=parameters_infos, X_train=X_train, y_train=y_train, X_valid=X_valid, y_valid=y_valid, dict_params=optim_params)
     print(f"Best Parameters:")
-    print(optim_model.get_best_params(bayesian_search))
+    print(optim_model.get_best_params(tuning))
     print("\n")
 
-    best_model = optim_model.fit_best_model(bayesian_search, X_train, y_train)
+    best_model = optim_model.fit_best_model(tuning, X_train, y_train)
     y_pred = optim_model.predict_result(best_model, X_valid)
     print("Tuned accuracy:")
     print(accuracy_score(y_valid, y_pred))

@@ -30,7 +30,10 @@ class ConfigReader:
             'verbose': self.config['optimization']['verbose'],
             'n_iter': self.config['optimization']['n_iter'],
             'n_jobs': self.config['optimization']['n_jobs'],
-            'random_state': self.config['optimization']['random_state']
+            'random_state': self.config['optimization']['random_state'],
+            'n_trials': self.config['optimization']['n_trials'],
+            'timeout': self.config['optimization']['timeout'],
+            'show_progress_bar': self.config['optimization']['show_progress_bar']
         }
         return optimization_params
 
@@ -41,7 +44,7 @@ class ConfigReader:
         }
         return data_paths
 
-    def get_parameter_ranges(self, optim_method):
+    def get_parameter_ranges(self, optim_method, trial=None):
         parameter_ranges = {}
         if optim_method in ["grid_search", "random_search"]:
             for param, param_info in self.config['model']['parameters'].items():
@@ -67,6 +70,15 @@ class ConfigReader:
                     parameter_ranges[param] = param_info['choices']
                 else:
                     raise ValueError(f"Unknown suggest_type: {suggest_type}")
-
+        elif optim_method == "optuna":
+            for param, param_info in self.config['model']['parameters'].items():
+                suggest_type = param_info['suggest_type']
+                if suggest_type in ["suggest_float"]:
+                    parameter_ranges[param] = (np.float(param_info['min']), np.float(param_info['max']), suggest_type)
+                elif suggest_type in ["suggest_int"]:
+                    parameter_ranges[param] = (np.int(param_info['min']), np.int(param_info['max']), suggest_type)
+                elif suggest_type == 'suggest_categorical':
+                    parameter_ranges[param] = [param_info['choices'], suggest_type]
+                else:
+                    raise ValueError(f"Unknown suggest_type: {suggest_type}")
         return parameter_ranges
-

@@ -25,6 +25,9 @@ optimization:
   random_state: 42
   n_jobs: -1
   verbose: 1
+  timeout: 3600
+  show_progress_bar: True
+  
 data:
   train_path: data/train.csv
   test_path: data/test.csv
