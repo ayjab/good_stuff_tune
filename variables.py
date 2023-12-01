@@ -18,7 +18,8 @@ MODELS = {
 
 OPTIM_MODELS = {"optuna": OptunaTuner,
         "grid_search": GridSearchTuner,
-        "bayesian_optim": BayesianTuner
+        "bayesian_optim": BayesianTuner,
+        "random_search": RandomSearchTuner
 }
 
 FILE_PATH = {

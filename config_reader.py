@@ -23,6 +23,16 @@ class ConfigReader:
             'n_trials': self.config['optimization']['n_trials']
         }
         return optimization_info
+    
+    def get_optimization_params(self):
+        optimization_params = {
+            'cv': self.config['optimization']['cv'],
+            'verbose': self.config['optimization']['verbose'],
+            'n_iter': self.config['optimization']['n_iter'],
+            'n_jobs': self.config['optimization']['n_jobs'],
+            'random_state': self.config['optimization']['random_state']
+        }
+        return optimization_params
 
     def get_data_paths(self):
         data_paths = {
@@ -31,18 +41,32 @@ class ConfigReader:
         }
         return data_paths
 
-    def get_parameter_ranges_bayes(self):
+    def get_parameter_ranges(self, optim_method):
         parameter_ranges = {}
-        for param, param_info in self.config['model']['parameters'].items():
-            suggest_type = param_info['suggest_type']
-            if suggest_type in ["suggest_float"]:
-                parameter_ranges[param] = (np.float(param_info['min']), np.float(param_info['max']))
-            elif suggest_type in ["suggest_int"]:
-                parameter_ranges[param] = (np.int(param_info['min']), np.int(param_info['max']))
-            elif suggest_type == 'suggest_categorical':
-                parameter_ranges[param] = param_info['choices']
-            else:
-                raise ValueError(f"Unknown suggest_type: {suggest_type}")
+        if optim_method in ["grid_search", "random_search"]:
+            for param, param_info in self.config['model']['parameters'].items():
+                suggest_type = param_info['suggest_type']
+                if suggest_type in ["suggest_float"]:
+                    min_, max_ = np.float(param_info['min']), np.float(param_info['max'])
+                    parameter_ranges[param] = [np.linspace(min_, max_, 10)]
+                elif suggest_type in ["suggest_int"]:
+                    min_, max_ = np.int(param_info['min']), np.int(param_info['max'])
+                    parameter_ranges[param] = [int(x) for x in np.linspace(min_, max_, 20)]
+                elif suggest_type == 'suggest_categorical':
+                    parameter_ranges[param] = param_info['choices']
+                else:
+                    raise ValueError(f"Unknown suggest_type: {suggest_type}")
+        elif optim_method == "bayesian_optim":
+            for param, param_info in self.config['model']['parameters'].items():
+                suggest_type = param_info['suggest_type']
+                if suggest_type in ["suggest_float"]:
+                    parameter_ranges[param] = (np.float(param_info['min']), np.float(param_info['max']))
+                elif suggest_type in ["suggest_int"]:
+                    parameter_ranges[param] = (np.int(param_info['min']), np.int(param_info['max']))
+                elif suggest_type == 'suggest_categorical':
+                    parameter_ranges[param] = param_info['choices']
+                else:
+                    raise ValueError(f"Unknown suggest_type: {suggest_type}")
 
         return parameter_ranges
 

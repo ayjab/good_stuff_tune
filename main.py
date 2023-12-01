@@ -10,20 +10,22 @@ from models import ModelFactory
 from optimization.init import TuneFactory
 from sklearn.metrics import accuracy_score
 
-#config_name="config/config_svm.yml"
+# config_name="config/config_svm.yml"
 config_name="config/config_rand_for.yml"
 
-
 config_file = ConfigReader(config_name)
-optim_infos = config_file.get_optimization_info()
-model_info = config_file.get_model_info()
-parameters_infos = config_file.get_parameter_ranges_bayes()
-print(parameters_infos)
-data_infos = config_file.get_data_paths()
 
+optim_infos = config_file.get_optimization_info()
 optim_method = optim_infos["method"]
+
+optim_params = config_file.get_optimization_params()
+parameters_infos = config_file.get_parameter_ranges(optim_method)
+
+model_info = config_file.get_model_info()
 model_name = model_info["name"]
 prob_type = model_info["problem_type"]
+
+data_infos = config_file.get_data_paths()
 
 iris = datasets.load_iris()
 X, y = iris.data[:, :2], iris.target
@@ -33,13 +35,16 @@ if __name__ == "__main__":
 
     model = ModelFactory.create_model(prob_type, model_name)
     optim_model = TuneFactory.create_model(optim_method)
-    bayesian_search = optim_model.tune(model.model, parameters_infos, X_train, y_train, X_valid, y_valid)
+    bayesian_search = optim_model.tune(model.model, parameters_infos, X_train, y_train, optim_params)
     print(f"Best Parameters:")
     print(optim_model.get_best_params(bayesian_search))
+    print("\n")
+
     best_model = optim_model.fit_best_model(bayesian_search, X_train, y_train)
     y_pred = optim_model.predict_result(best_model, X_valid)
     print("Tuned accuracy:")
     print(accuracy_score(y_valid, y_pred))
+    print("\n")
 
     model_ = ModelFactory.create_model(prob_type, model_name)
     model_.train(X_train, y_train)
