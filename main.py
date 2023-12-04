@@ -39,7 +39,7 @@ if __name__ == "__main__":
     print("\n")   
 
     model = ModelFactory.create_model(prob_type, model_name)
-    optim_model = TuneFactory.create_model(optim_method)
+    optim_model = TuneFactory.create_model(model_name, parameters_infos, X_train, y_train, X_valid, y_valid, optim_params)
     tuning = optim_model.tune(model=model.model, param_space=parameters_infos, X_train=X_train, y_train=y_train, X_valid=X_valid, y_valid=y_valid, dict_params=optim_params)
     print(f"Best Parameters:")
     print(optim_model.get_best_params(tuning))

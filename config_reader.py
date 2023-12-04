@@ -16,13 +16,6 @@ class ConfigReader:
             'problem_type': self.config['model']['problem_type'],
         }
         return model_info
-
-    def get_optimization_info(self):
-        optimization_info = {
-            'method': self.config['optimization']['method'],
-            'n_trials': self.config['optimization']['n_trials']
-        }
-        return optimization_info
     
     def get_optimization_params(self):
         optimization_params = {
@@ -51,7 +44,7 @@ class ConfigReader:
                 suggest_type = param_info['suggest_type']
                 if suggest_type in ["suggest_float"]:
                     min_, max_ = np.float(param_info['min']), np.float(param_info['max'])
-                    parameter_ranges[param] = [np.linspace(min_, max_, 10)]
+                    parameter_ranges[param] = np.linspace(min_, max_, 10)
                 elif suggest_type in ["suggest_int"]:
                     min_, max_ = np.int(param_info['min']), np.int(param_info['max'])
                     parameter_ranges[param] = [int(x) for x in np.linspace(min_, max_, 20)]
