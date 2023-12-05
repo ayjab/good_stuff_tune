@@ -7,10 +7,10 @@ git clone https://github.com/ayjab/good_stuff_tune
 cd C:\Users\user\good_stuff_tune
 python main.py --method --model --problem --data
 ```
-The data should be uploaded into the _data_ directory, or check main.py for specific usage.<br>
+The data should be uploaded into the data directory, or you can refer to _main.py_ for specific usage.<br>
 Example:
 ```
-python launch.py --method grid_search --model svm --problem classification --data data/iris.csv
+python main.py --method grid_search --model svm --problem classification --data data/iris.csv
 ```
 The configurations for each model and problem type can be found in the directory named cfg. Feel free to modify the hyperparameters and their ranges or to add a specific model in the models directory, adhering to its architecture. A snip of a configuration file:
 
