@@ -12,7 +12,7 @@ Example:
 python main.py --method grid_search --model svm --problem classification --data data/iris.csv
 ```
 The data should be uploaded into the data directory, or you can refer to _main.py_ for specific usage.<br>
-The configurations for each model and problem type can be found in the directory named cfg. Feel free to modify the hyperparameters and their ranges or to add a specific model in the models directory, adhering to its architecture. A snip of a configuration file:
+The configurations for each model and problem type can be found in the directory named cfg. Feel free to modify the hyperparameters and their ranges or to add a specific model in the models directory, wuth respect to its architecture. A snip of a configuration file:
 
 ```
 model:
