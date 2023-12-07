@@ -3,7 +3,7 @@ This repository is useful for tuning machine learning models for both classifica
 
 ### Usage 
 ```
-git clone https://github.com/ayjab/good_stuff_tune
+git clone https://github.com/ayjab/tune_ml
 cd C:\Users\user\good_stuff_tune
 python main.py --method --model --problem --data
 ```
