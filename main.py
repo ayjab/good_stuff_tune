@@ -24,7 +24,7 @@ if not os.path.isfile(config_filename):
     exit(1)
 config_file = ConfigReader(config_filename)
 
-data_path = args.data 
+data_path = f"data/{args.data}" 
 if not os.path.isfile(data_path):
     print(f"Error: data file {data_path} does not exist.")
     exit(1)

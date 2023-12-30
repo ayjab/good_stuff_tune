@@ -2,6 +2,7 @@ from sklearn.metrics import accuracy_score
 from sklearn.svm import SVC
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.linear_model import LogisticRegression
+from xgboost import XGBClassifier
 
 class SVMClassifier:
     def __init__(self, *args):
@@ -31,4 +32,16 @@ class RandomForestClassifierWrapper:
         y_pred = self.model.predict(X_valid)
         return accuracy_score(y_valid, y_pred)
 
+class XGBoostClassifierWrapper:
+    def __init__(self, *args, **kwargs):
+        self.model = XGBClassifier(*args, **kwargs)
 
+    def train(self, X_train, y_train):
+        self.model.fit(X_train, y_train)
+
+    def predict(self, X_test):
+        return self.model.predict(X_test)
+
+    def accuracy(self, X_valid, y_valid):
+        y_pred = self.model.predict(X_valid)
+        return accuracy_score(y_valid, y_pred)

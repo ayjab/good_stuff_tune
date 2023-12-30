@@ -90,10 +90,10 @@ class RandomSearchTuner:
         relevant_dict_params = {k: v for k, v in dict_params.items() if k in RANDOM_PARAMS}
         print("Running Random search...\n", flush=True)
         try:
-            grid_search = RandomizedSearchCV(model, param_space, **relevant_dict_params)
-            grid_search.fit(X_train, y_train)
+            random_search = RandomizedSearchCV(model, param_space, **relevant_dict_params)
+            random_search.fit(X_train, y_train)
             print("\nRandom search done.\n")
-            return grid_search
+            return random_search.best_params_
         except Exception as e:
             print(f"Error during  Random search:")
             traceback.print_exc()

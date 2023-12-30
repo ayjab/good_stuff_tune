@@ -1,0 +1,32 @@
+model:
+  name: RandomForest  
+  problem_type: classification  
+  parameters:
+    C:
+      suggest_type: suggest_float
+      min: 1e-5
+      max: 10
+    kernel:
+      suggest_type: suggest_categorical
+      choices:
+        - "sigmoid"
+        - "linear"
+        - "poly"
+        - "rbf"
+    gamma:
+      suggest_type: suggest_float
+      min: 1e-5
+      max: 10
+optimization:
+  n_trials: 10
+  cv: 3
+  n_iter: 20
+  random_state: 42
+  n_jobs: -1
+  verbose: 5
+  timeout: 3600
+  show_progress_bar: True
+  
+data:
+  train_path: data/train.csv
+  test_path: data/test.csv

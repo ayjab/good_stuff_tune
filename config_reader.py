@@ -43,10 +43,10 @@ class ConfigReader:
             for param, param_info in self.config['model']['parameters'].items():
                 suggest_type = param_info['suggest_type']
                 if suggest_type in ["suggest_float"]:
-                    min_, max_ = np.float(param_info['min']), np.float(param_info['max'])
+                    min_, max_ = float(param_info['min']), float(param_info['max'])
                     parameter_ranges[param] = np.linspace(min_, max_, 10)
                 elif suggest_type in ["suggest_int"]:
-                    min_, max_ = np.int(param_info['min']), np.int(param_info['max'])
+                    min_, max_ = int(param_info['min']), int(param_info['max'])
                     parameter_ranges[param] = [int(x) for x in np.linspace(min_, max_, 20)]
                 elif suggest_type == 'suggest_categorical':
                     parameter_ranges[param] = param_info['choices']
@@ -56,9 +56,9 @@ class ConfigReader:
             for param, param_info in self.config['model']['parameters'].items():
                 suggest_type = param_info['suggest_type']
                 if suggest_type in ["suggest_float"]:
-                    parameter_ranges[param] = (np.float(param_info['min']), np.float(param_info['max']))
+                    parameter_ranges[param] = (float(param_info['min']), float(param_info['max']))
                 elif suggest_type in ["suggest_int"]:
-                    parameter_ranges[param] = (np.int(param_info['min']), np.int(param_info['max']))
+                    parameter_ranges[param] = (int(param_info['min']), int(param_info['max']))
                 elif suggest_type == 'suggest_categorical':
                     parameter_ranges[param] = param_info['choices']
                 else:
@@ -67,9 +67,9 @@ class ConfigReader:
             for param, param_info in self.config['model']['parameters'].items():
                 suggest_type = param_info['suggest_type']
                 if suggest_type in ["suggest_float"]:
-                    parameter_ranges[param] = (np.float(param_info['min']), np.float(param_info['max']), suggest_type)
+                    parameter_ranges[param] = (float(param_info['min']), float(param_info['max']), suggest_type)
                 elif suggest_type in ["suggest_int"]:
-                    parameter_ranges[param] = (np.int(param_info['min']), np.int(param_info['max']), suggest_type)
+                    parameter_ranges[param] = (int(param_info['min']), int(param_info['max']), suggest_type)
                 elif suggest_type == 'suggest_categorical':
                     parameter_ranges[param] = [param_info['choices'], suggest_type]
                 else:
